@@ -2,10 +2,11 @@
   "name": "grantblock-node",
   "version": "1.0.0",
   "description": "A nodejs app used to simulate a server for specific operations",
-  "main": "server.js",
+  "main": "./src/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/server.js --exec babel-node --presets env"
+    "dev": "nodemon src/server.js --exec babel-node --presets env",
+    "build": "babel src -d dist --source-maps"
   },
   "author": "Department of Education",
   "license": "ISC",
