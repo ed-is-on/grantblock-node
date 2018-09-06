@@ -51,48 +51,42 @@ async init() {
     LOG.info('Grantblock:<init>', 'businessNetworkDefinition obtained', this.businessNetworkDefinition.getIdentifier());
 }
 
-/** 
-* Listen for the sale transaction events
-*/
-listen() {
-    this.bizNetworkConnection.on('event', (evt) => {
-        console.log(chalk.blue.bold('New Event'));
-        console.log(evt);
+    /** 
+    * Listen for the sale transaction events
+    */
+    listen() {
+        this.bizNetworkConnection.on('event', (evt) => {
+            console.log(chalk.blue.bold('New Event'));
+            console.log(evt);
 
-        let options = {
-            properties: { key:'value'}
-        };
-    });
-}
+            let options = {
+                properties: { key:'value'}
+            };
+        });
+    }
+    
     /**
      * Gets a participant from the current registry and issues them an identity
-     * @param {Object} args this will be the information for the participant already in the registry
+     * @param {String} args this will be the information for the participant already in the registry (specifically a grantee's ID)
      * @return {Promise} resolved when the issued identity pings the network
      */
+    async identityIssue(args) {
 
-    async issueGranteeIdentity(args){
+        let businessNetworkConnection = new BusinessNetworkConnection();
+        let something = args;
+
         const METHOD = 'issueGranteeIdentity';
         LOG.info(METHOD, 'issuing an identity to a given grantee');
 
-        try{
-
-        }catch(error){
-            console.log(error);
-            this.log.error(METHOD, 'Danger Will Robinson!', error);
-        }
-    }
-    async identityIssue() {
-        let businessNetworkConnection = new BusinessNetworkConnection();
-
         try {
-            await businessNetworkConnection.connect('admin@digitalPropertyNetwork');
-            let result = await businessNetworkConnection.issueIdentity('net.biz.digitalPropertyNetwork.Person#mae@biznet.org', 'maeid1')
+            await businessNetworkConnection.connect('admin@grantblock');
+            let result = await businessNetworkConnection.issueIdentity('com.usgov.grantblock.Grantee#' + something.granteeId, granteeId)
             console.log(`userID = ${result.userID}`);
             console.log(`userSecret = ${result.userSecret}`);
             await businessNetworkConnection.disconnect();
         } catch(error) {
             console.log(error);
-            process.exit(1);
+            this.log.error(METHOD, 'Danger Will Robinson!', error);
         }
     }
     
